@@ -17,11 +17,11 @@ public class Card extends FrameLayout {
 
 
 
-    public Card(@NonNull Context context) {
+    public Card(@NonNull Context context , int w) {
         super(context);
 
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(50 ,50);
-        lp.setMargins(10,10,0,0);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(w-10 ,w-10);
+        lp.setMargins(5,5,5,5);
 
         View view = new View(context);
         view.setBackgroundColor(0x33ff00ff);
@@ -29,7 +29,7 @@ public class Card extends FrameLayout {
 
          tv= new TextView(context);
        // tv.setText(Integer.toString(0));
-        tv.setTextSize(28);
+        tv.setTextSize(48);
         tv.setGravity(Gravity.CENTER);
         addView(tv,lp);
 
@@ -48,7 +48,39 @@ public class Card extends FrameLayout {
     {
         value = num;
 
+        if (num > 0)
         tv.setText(Integer.toString(num));
+        else
+            tv.setText("");
+
+
+        switch(num)
+        {
+            case 0:
+                tv.setBackgroundColor(0xffcdc1b4);
+                break;
+
+            case 2:
+                tv.setBackgroundColor(0xffeee4da);
+                tv.setTextColor(0xff000000);
+
+                break;
+            case 4:
+                tv.setBackgroundColor(0xffede0c8);
+                tv.setTextColor(0xff000000);
+
+
+                break;
+            case 8:
+                tv.setBackgroundColor(0xfff2b179);
+                tv.setTextColor(0xffffffff);
+
+                break;
+
+
+        }
+
+     //   tv.setTextColor(0xffffffff);
 
     }
 }

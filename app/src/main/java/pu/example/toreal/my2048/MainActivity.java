@@ -192,12 +192,54 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void mup(){
-        Toast.makeText(getApplicationContext(),"up", Toast.LENGTH_SHORT  ).show();
+    void mdown(){
+
+        boolean merge= false;
+        for ( int i = 0 ; i < nrows; i++)
+            for ( int j=  nrows -1 ; j >= 0 ; j -- )
+            {
+                for ( int nj = j-1; nj >=0 ; nj--)
+                {
+                    int curri = cards[i][j].getNum();
+                    int checki = cards[i][nj].getNum();
+
+                    if ( checki > 0)
+                    {
+                        if (curri ==0 )
+                        {
+                            cards[i][j].setNum(checki);
+                            cards[i][nj].setNum(0);
+                            merge = true;
+                            j++;
+                            break;
+
+                        }else if (checki == curri)
+                        {
+                            cards[i][j].setNum(checki*2);
+                            cards[i][nj].setNum(0);
+                            merge=true;
+
+                        }
+
+
+                    }
+
+
+                }
+
+            }
+
+        if ( merge)
+            addNum();
+
+
+
+
+        Toast.makeText(getApplicationContext(),"down", Toast.LENGTH_SHORT  ).show();
 
     }
-    void mdown(){
-        Toast.makeText(getApplicationContext(),"down", Toast.LENGTH_SHORT  ).show();
+    void mup(){
+        Toast.makeText(getApplicationContext(),"up", Toast.LENGTH_SHORT  ).show();
 
     }
 

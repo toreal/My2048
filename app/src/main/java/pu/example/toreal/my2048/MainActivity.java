@@ -12,6 +12,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     void myfun(){
 
         ConstraintLayout myview = (ConstraintLayout) findViewById(R.id.myview);
-
+        myview.setBackgroundColor(0xffffffff);
+       // layout = (FrameLayout) findViewById(R.id.aniview);
 
         LinearLayout li = new LinearLayout(getApplicationContext());
         LinearLayout.LayoutParams params =
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         int w=myview.getWidth();
 
         int n = 4;
-        int nwidth = w/n;
+         nwidth = w/n;
 
         for (int j = 0; j < n; j++) {
 
@@ -131,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+        layout = new FrameLayout(getApplicationContext());
+      //  layout.setBackgroundColor( 0x88ffff00);
+        myview.addView(layout);
 
         //Card obj = new Card(getApplicationContext());
 
@@ -161,6 +168,10 @@ public class MainActivity extends AppCompatActivity {
                         {
                             cards[i][j].setNum(checki);
                             cards[ni][j].setNum(0);
+
+                            animate(ni, i,j,checki , cards[i][j],cards[ni][j]) ;
+
+
                             merge = true;
                             i++;
                             break;
@@ -169,8 +180,13 @@ public class MainActivity extends AppCompatActivity {
                         {
                             cards[i][j].setNum(checki*2);
                             cards[ni][j].setNum(0);
+
+                            animate(ni, i,j,checki , cards[i][j],cards[ni][j]) ;
                             merge=true;
 
+                        }else //checki > 0 && curri!=0
+                        {
+                            break;
                         }
 
 
@@ -244,7 +260,70 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    void animate(int fromx  , int tox , int row , int num  , final Card ca1, final Card ca2)
+    {
+
+        ca1.setVisibility(View.INVISIBLE);
+       // ca2.setVisibility(View.INVISIBLE);
+        final Card ca = new Card(getApplicationContext(),nwidth);
+
+        ca.setNum(num);
+
+
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(nwidth,nwidth);
+
+        lp.setMargins(fromx*nwidth, row*nwidth,0,0);
+
+        layout.addView(ca,lp);
+
+
+        final Card cat = new Card(getApplicationContext(),nwidth);
+
+        cat.setNum(0);
+
+
+        FrameLayout.LayoutParams lpt = new FrameLayout.LayoutParams(nwidth,nwidth);
+
+        lpt.setMargins(tox*nwidth, row*nwidth,0,0);
+
+        layout.addView(cat,lpt);
+
+
+
+        TranslateAnimation ani= new TranslateAnimation(0, nwidth *(tox-fromx),0, 0);
+
+
+        ani.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+                ca1.setVisibility(View.VISIBLE);
+                ca.setVisibility(View.INVISIBLE);
+                cat.setVisibility(View.INVISIBLE);
+
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+        ani.setDuration(300);
+        ca.startAnimation(ani);
+
+    }
+
+    int nwidth;
     int nrows= 4;
+    FrameLayout layout;
     Card [][] cards =new Card[nrows][nrows];
 
     ArrayList<Point>  emptyList= new ArrayList<Point>();

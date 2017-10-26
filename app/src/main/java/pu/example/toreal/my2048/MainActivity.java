@@ -1,9 +1,11 @@
 package pu.example.toreal.my2048;
 
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.solver.ArrayLinkedVariables;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -197,14 +199,72 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            if ( merge)
+            if ( merge) {
                 addNum();
 
+                checkComplete();
+            }
         Toast.makeText(getApplicationContext(),"right", Toast.LENGTH_SHORT  ).show();
     }
 
     void mleft(){
         Toast.makeText(getApplicationContext(),"left", Toast.LENGTH_SHORT  ).show();
+
+    }
+
+
+    void checkComplete()
+    {
+        boolean bend = true;
+
+
+        for ( int i = 0 ; i < 4 ; i ++)
+            for ( int j = 0 ; j<4; j++)
+            {
+                int curr=cards[i][j].getNum();
+                int a =-1;
+                if ( i > 0 )
+                a=cards[i-1][j].getNum();
+                int b = -1;
+                if (i <3)
+                b=cards[i+1][j].getNum();
+
+
+                int c =-1;
+                if ( j>0)
+                c=cards[i][j-1].getNum();
+
+
+                int d =-1;
+                if (j < 3)
+                    d=cards[i][j+1].getNum();
+
+
+                if ( curr==0 || curr == a || curr ==b   || curr== c || curr==d )
+                {
+                    bend = false;
+
+                    break;
+
+                }
+
+            }
+
+
+            if ( bend)
+            {
+                 new AlertDialog.Builder(getApplicationContext()).setMessage("Game Over")
+                         .setPositiveButton("start new game", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        initGame();
+                    }
+                }).show();
+
+
+            }
+
 
     }
 
@@ -333,10 +393,12 @@ public class MainActivity extends AppCompatActivity {
         for ( int j = 0 ; j < nrows; j++)
             for ( int i = 0 ; i < nrows; i++)
             {
-                emptyList.add(new Point(i,j));
+                cards[i][j].setNum(0);
 
             }
 
+            addNum();
+            addNum();
 
 
     }
